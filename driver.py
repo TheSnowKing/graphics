@@ -8,20 +8,6 @@ from shapes import Cube, colors
 
 import random
 
-def unit_cube():
-    vertices = [
-        [0, 0, 0],
-        [0, 0, 1],
-        [0, 1, 0],
-        [0, 1, 1],
-        [1, 0, 0],
-        [1, 0, 1],
-        [1, 1, 0],
-        [1, 1, 1]
-        ]
-    return vertices
-
-
 def setup(width, height, offset_z=10):
     pygame.init()
     pygame.display.set_mode((width, height), DOUBLEBUF | OPENGL)
@@ -59,7 +45,7 @@ def main():
     num_cubes = 2
     cube_dict = {}
     for index in range(num_cubes):
-        cube = Cube(unit_cube(), color, True)
+        cube = Cube(Cube.unit_cube(), color, True)
 
         shift = (2*index, 0, 0)
         cube.move(shift)

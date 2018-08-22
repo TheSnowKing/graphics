@@ -42,6 +42,23 @@ colors = (
 
 
 class Cube():
+
+    @staticmethod
+    def unit_cube():
+        vertices = [
+            [0, 0, 0],
+            [0, 0, 1],
+            [0, 1, 0],
+            [0, 1, 1],
+            [1, 0, 0],
+            [1, 0, 1],
+            [1, 1, 0],
+            [1, 1, 1]
+            ]
+        return vertices
+
+
+    # Constructor
     def __init__(self, vertices, color=(0,0,0), reposition=False):
         self.vertices = vertices
         self.color = color
@@ -57,14 +74,17 @@ class Cube():
         self.pivot = self.get_center()
 
 
+    # Provides a string output of the cube
     def __str__(self):
         return "Center: " + str(self.get_center()) + "\tpivot: " + str(self.pivot)
 
 
+    # Sets the color of the cube
     def set_color(self, color):
         self.color = color
 
 
+    # Calculates the center of the cube
     def get_center(self):
         xc = 0
         yc = 0
@@ -137,7 +157,8 @@ class Cube():
                     vertex[2] += half_length * (factor - 1)
 
 
-    # Rotates the cube about the pivot
+    # Rotates the cube about the pivot, using a rotational axis
+    # defined by the directional vector (x, y, z)
     def rotate(self, deg, x, y, z):
         # Shift the cube to the origin
         shift = (-self.pivot[0], -self.pivot[1], -self.pivot[2])
