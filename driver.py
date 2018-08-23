@@ -55,7 +55,7 @@ def close():
 # Main program
 def main():
     offset_z = 20.0
-    setup(800, 600, offset_z)
+    setup(1918, 1018, offset_z)
 
     left_pressed = False    # Toggle to True if the left arrow-key is pressed down
     right_pressed = False   # Toggle to True if the right arrow-key is pressed down
