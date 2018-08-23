@@ -1,4 +1,3 @@
-
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
@@ -43,6 +42,7 @@ colors = (
 
 class Cube():
 
+    # Returns a list of vertices for the unit cube
     @staticmethod
     def unit_cube():
         vertices = [
@@ -164,7 +164,7 @@ class Cube():
         shift = (-self.pivot[0], -self.pivot[1], -self.pivot[2])
         self.move(shift)
 
-        # Normalize the orientation vector
+        # Create a vec3 using the components of the orientation vector
         axis = glm.vec3()
         axis[0] = x
         axis[1] = y
@@ -175,7 +175,10 @@ class Cube():
         s = sin(a)
         m = glm.mat4(1.0)
 
+        # Construct the rotation matrix
         m = glm.rotate(m, a, axis)
+
+        # Rotate each of the vertices
         for vertex in self.vertices:
             v = glm.vec4()
             v[0] = vertex[0]
@@ -207,7 +210,6 @@ class Cube():
 
     # Draws the faces of the cube
     def draw(self):
-        # Set the color of the cube's faces
         glBegin(GL_QUADS)
         glColor3fv(self.color)
 
@@ -215,15 +217,13 @@ class Cube():
         for surface in surfaces:
             for vertex in surface:
                 glVertex3fv(self.vertices[vertex])
-
-        # Set the color of the cube's frame
-        black = colors[0]
         glEnd()
 
         # Draw the frame of the cube
+        black = colors[0]
         if self.color is black:
-            self.draw_mesh((1,1,1))
+            self.draw_mesh((1,1,1)) # Use a white mesh
         else:
-            self.draw_mesh((0,0,0))
+            self.draw_mesh((0,0,0)) # Use a black mesh
 
 
