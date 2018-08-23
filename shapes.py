@@ -20,12 +20,12 @@ edges = (
     )
 
 surfaces = (
-    (0, 1, 2, 3),
-    (0, 1, 5, 4),
+    (0, 1, 3, 2),
+    (0, 4, 5, 1),
     (0, 2, 6, 4),
-    (1, 3, 7, 5),
+    (1, 5, 7, 3),
     (2, 3, 7, 6),
-    (4, 5, 7, 6)
+    (4, 6, 7, 5)
     )
 
 colors = (
@@ -200,7 +200,7 @@ class Cube():
     # Draws the wireframe mesh of the cube
     def draw_mesh(self, color=(1,1,1)):
         glBegin(GL_LINES)
-        glColor3fv(color)
+        glColor(color)
 
         for edge in edges:
             for vertex in edge:
@@ -211,7 +211,7 @@ class Cube():
     # Draws the faces of the cube
     def draw(self):
         glBegin(GL_QUADS)
-        glColor3fv(self.color)
+        glColor(self.color)
 
         # Draw the faces of the cube 
         for surface in surfaces:
@@ -225,5 +225,4 @@ class Cube():
             self.draw_mesh((1,1,1)) # Use a white mesh
         else:
             self.draw_mesh((0,0,0)) # Use a black mesh
-
 

@@ -4,14 +4,39 @@ from OpenGL.GLU import *
 import pygame
 from pygame.locals import *
 
+import math
 from shapes import Cube, colors
 from player import Player, Direction
+
+def ground():
+    ground_height = 0.2
+    ground_vertices = (
+                (10, -ground_height, 50),
+                (10, -ground_height, -50),
+                (-10, -ground_height, -50),
+                (-10, -ground_height, 50)
+                )
+    glBegin(GL_QUADS)
+    color = (0.30, 0.30, 0.30)
+    glColor3fv(color)
+    for vertex in ground_vertices:
+        glVertex3fv(vertex)
+    glEnd()
 
 
 # Sets up a pygame environment
 def setup(width, height, offset_z=10):
     pygame.init()
-    pygame.display.set_mode((width, height), DOUBLEBUF | OPENGL)
+    screen = pygame.display.set_mode((width, height), DOUBLEBUF | OPENGL)
+
+    # Set the background color
+    glClearColor(0.5, 0.5, 0.5, 1)
+
+    # Enable drawing properties
+    glEnable(GL_LINE_SMOOTH)
+    glEnable(GL_DEPTH_TEST)
+    glEnable(GL_CULL_FACE)
+    glDepthFunc(GL_LEQUAL)
 
     # Set field of view (degrees, aspect ratio, clipping planes)
     gluPerspective(45, float(width)/float(height), 0.1, 50.0)
@@ -43,23 +68,22 @@ def main():
     paused = False
     mousewheel_enabled = True
 
-    color = colors[5]
+    color = colors[3]
     counter = 0             # Counter for sinusoidal oscillations and color flicker
 
     player = Player((0,0,-offset_z))
 
     # Create the dictionary of cubes
-    num_cubes = 2
+    num_cubes = 3
     cube_dict = {}
     for index in range(num_cubes):
         cube = Cube(Cube.unit_cube(), color, True)
 
-        shift = (2*index, 0, 0)
+        shift = (2*index-2, 0.5, 0)
         cube.move(shift)
 
         cube.reset_pivot()         # Set the pivot to be the cube's center
         cube_dict[index] = cube     # Add cube to the dictionary
-
 
     # Game loop
     while not collided:
@@ -147,16 +171,28 @@ def main():
         glTranslate(-v[0], -v[1], v[2])
         player.update()
 
+
+
+        ground()
+
         # Draw each of the cubes
 #        cur_color = colors[counter % len(colors)]
         for key in cube_dict:
             cube = cube_dict[key]
 #            new_loc = (cube.pivot[0] + sin(counter), cube.get_center()[1], cube.get_center()[2])
 #            cube.set_loc(new_loc)
-            cube.rotate(5,1,1,1)
+#            cube.rotate(5,1,1,1)
 #            cube.set_color(cur_color)
             cube.draw()
 
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
+
+
+
+#        print(mouse)
+#        print(click)
+#        print()
         pygame.display.flip()
         pygame.time.wait(10)    # Wait 10 milliseconds
 
