@@ -9,7 +9,7 @@ from shapes import Cube, colors
 from player import Player, Direction
 
 def ground():
-    ground_height = 0.2
+    ground_height = 0.5
     ground_vertices = (
                 (10, -ground_height, 50),
                 (10, -ground_height, -50),
@@ -71,7 +71,7 @@ def main():
     color = colors[3]
     counter = 0             # Counter for sinusoidal oscillations and color flicker
 
-    player = Player((0,0,-offset_z))
+    player = Player((0,0,offset_z))
 
     # Create the dictionary of cubes
     num_cubes = 3
@@ -168,7 +168,7 @@ def main():
 
         # Translate the camera according to the player's velocity
         v = player.get_vel()
-        glTranslate(-v[0], -v[1], v[2])
+        glTranslate(-v[0], -v[1], -v[2])
         player.update()
 
 
@@ -181,7 +181,7 @@ def main():
             cube = cube_dict[key]
 #            new_loc = (cube.pivot[0] + sin(counter), cube.get_center()[1], cube.get_center()[2])
 #            cube.set_loc(new_loc)
-#            cube.rotate(5,1,1,1)
+            cube.rotate(5,1,1,1)
 #            cube.set_color(cur_color)
             cube.draw()
 

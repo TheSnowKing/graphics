@@ -58,7 +58,7 @@ class Cube():
         return vertices
 
 
-    # Constructor
+    # Constructor TODO Add initial location as an input param
     def __init__(self, vertices, color=(0,0,0), reposition=False):
         self.vertices = vertices
         self.color = color
@@ -160,39 +160,33 @@ class Cube():
     # Rotates the cube about the pivot, using a rotational axis
     # defined by the directional vector (x, y, z)
     def rotate(self, deg, x, y, z):
-        # Shift the cube to the origin
+        # Shift the cube so that it's pivot resides at the origin
         shift = (-self.pivot[0], -self.pivot[1], -self.pivot[2])
         self.move(shift)
 
         # Create a vec3 using the components of the orientation vector
-        axis = glm.vec3()
-        axis[0] = x
-        axis[1] = y
-        axis[2] = z
+        axis = glm.vec3(x, y, z)
 
         a = radians(deg)
         c = cos(a)
         s = sin(a)
-        m = glm.mat4(1.0)
+        m = glm.mat4(1.0)   # Identity matrix
 
-        # Construct the rotation matrix
+        # Construct the rotation matrix using the identity
         m = glm.rotate(m, a, axis)
 
         # Rotate each of the vertices
         for vertex in self.vertices:
-            v = glm.vec4()
-            v[0] = vertex[0]
-            v[1] = vertex[1]
-            v[2] = vertex[2]
-            v[3] = 1
-
+            # Perform the rotation
+            v = glm.vec4(vertex[0], vertex[1], vertex[2], 1)
             v = m*v
 
+            # Update the location of the vertices
             vertex[0] = v[0]
             vertex[1] = v[1]
             vertex[2] = v[2]
 
-        # Move the cube back to its original location
+        # Move the cube back and its pivot back to the original location
         shift = (-shift[0], -shift[1], -shift[2])
         self.move(shift)
 

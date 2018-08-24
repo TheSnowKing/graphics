@@ -45,9 +45,9 @@ class Player():
             self.vel.y -= self.speed
 
         if direction is Direction.IN:
-            self.vel.z += self.speed
-        elif direction is Direction.OUT:
             self.vel.z -= self.speed
+        elif direction is Direction.OUT:
+            self.vel.z += self.speed
 
     # Stop moving in a specified direction
     def stop_motion(self, direction):
@@ -63,9 +63,9 @@ class Player():
             self.vel.y += self.speed
 
         if direction is Direction.IN:
-            self.vel.z -= self.speed
-        elif direction is Direction.OUT:
             self.vel.z += self.speed
+        elif direction is Direction.OUT:
+            self.vel.z -= self.speed
 
 
     def get_loc(self):
