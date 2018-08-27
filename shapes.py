@@ -168,8 +168,6 @@ class Cube():
         axis = glm.vec3(x, y, z)
 
         a = radians(deg)
-        c = cos(a)
-        s = sin(a)
         m = glm.mat4(1.0)   # Identity matrix
 
         # Construct the rotation matrix using the identity
