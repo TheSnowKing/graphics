@@ -26,7 +26,6 @@ class Player():
         self.speed = 0.25
 
         self.axis = glm.vec3(0.0, 0.0, 0.0)
-        self.mat = glm.mat3()
 
     # Output representation
     def __str__(self):
@@ -76,93 +75,39 @@ class Player():
         glTranslate(shift.x, shift.y, shift.z)
 
 
-    def rotate_h(self, delta):
+    # Changes the view of the player
+    def rotate_view(self, delta_x, delta_y):
+
         # Shift the camera to the origin
         shift = glm.vec3(self.loc.x, self.loc.y, self.loc.z)
         self.translate_view(shift)
 
         # Get the modelview matrix
         m = glGetFloatv(GL_MODELVIEW_MATRIX)
-
         u = glm.normalize(glm.vec3(float(m[0][0]), float(m[0][1]), float(m[0][2])))
         v = glm.normalize(glm.vec3(float(m[1][0]), float(m[1][1]), float(m[1][2])))
         w = glm.normalize(glm.vec3(float(m[2][0]), float(m[2][1]), float(m[2][2])))
 
+        # TODO Don't need this matrix
         R = glm.mat3(
-                u[0],  u[1],  u[2],
-                v[0],  v[1],  v[2],
-               -w[0], -w[1], -w[2]
+                u[0], u[1], u[2],
+                v[0], v[1], v[2],
+                w[0], w[1], w[2]
                 )
-        self.mat = R
-        R_inv = glm.inverse(R)
-
-        # Rotate the camera around the horizontal axis
-        deg_y = 0.3*delta
-#        axis_h = right
-        ref = glm.vec3(1.0, 0.0, 0.0)
-        axis_h = R*ref
-#        axis_h = (axis_h[0], 0.0, axis_h[)
-        self.axis = axis_h
-        glRotate(deg_y, axis_h.x, axis_h.y, axis_h.z)
-
-        # Get the modelview matrix TODO DELETE
-        m = glGetFloatv(GL_MODELVIEW_MATRIX)
-        right   = glm.normalize(glm.vec3(float(m[0][0]), float(m[0][1]), float(m[0][2])))
-        up      = glm.normalize(glm.vec3(float(m[1][0]), float(m[1][1]), float(m[1][2])))
-        forward = glm.normalize(glm.vec3(float(m[2][0]), float(m[2][1]), float(m[2][2])))
-
-        R = glm.mat3(
-                right[0],   right[1],   right[2],
-                up[0],      up[1],      up[2],
-               -forward[0],-forward[1],-forward[2]
-                )
-        self.mat = R
-
-
-        # Shift back to the player position
-        shift = glm.vec3(-self.loc.x, -self.loc.y, -self.loc.z)
-        self.translate_view(shift)
-
-
-    def rotate_v(self, delta):
-        # Shift the camera to the origin
-        shift = glm.vec3(self.loc.x, self.loc.y, self.loc.z)
-        self.translate_view(shift)
 
         # Rotate the camera around the vertical axis
-        deg_x = 0.3*delta
-        axis_v = glm.vec3(0.0, 1.0, 0.0)
-        glRotate(deg_x, axis_v.x, axis_v.y, axis_v.z)
+        yaw = 0.1*delta_x
+        axis = glm.vec3(0.0, 1.0, 0.0)
+        glRotate(yaw, axis.x, axis.y, axis.z)
 
-
-
-        # Get the modelview matrix TODO DELETE
-        m = glGetFloatv(GL_MODELVIEW_MATRIX)
-        right   = glm.normalize(glm.vec3(float(m[0][0]), float(m[0][1]), float(m[0][2])))
-        up      = glm.normalize(glm.vec3(float(m[1][0]), float(m[1][1]), float(m[1][2])))
-        forward = glm.normalize(glm.vec3(float(m[2][0]), float(m[2][1]), float(m[2][2])))
-
-        B = glm.mat3(
-                right[0],   right[1],   right[2],
-                up[0],      up[1],      up[2],
-               -forward[0],-forward[1],-forward[2]
-                )
-        self.mat = B
-
-
+        # Rotate the camera around the horizontal axis
+        pitch = 0.1*delta_y
+        axis = glm.normalize( glm.cross(w, glm.vec3(0.0, 1.0, 0.0)) )
+#        glRotate(pitch, axis.x, axis.y, axis.z)
 
         # Shift back to the player position
         shift = glm.vec3(-self.loc.x, -self.loc.y, -self.loc.z)
         self.translate_view(shift)
-
-
-    # Changes the view of the player
-    def rotate_view(self, delta_x, delta_y):
-        if delta_x != 0:
-            self.rotate_v(delta_x)
-
-        if delta_y != 0: 
-            self.rotate_h(delta_y)
 
 
     def jump(self):
@@ -185,9 +130,9 @@ class Player():
         right   = glm.normalize(glm.vec3(float(m[0][0]), float(m[0][1]), float(m[0][2])))
         up      = glm.normalize(glm.vec3(float(m[1][0]), float(m[1][1]), float(m[1][2])))
         forward = glm.normalize(glm.vec3(float(m[2][0]), float(m[2][1]), float(m[2][2])))
-        print("Right:             (" + str(right.x)   + ",\t " + str(right.y)   + ",\t " + str(right.z)   + ")")
-        print("Up:                (" + str(up.x)      + ",\t " + str(up.y)      + ",\t " + str(up.z)      + ")")
-        print("Forward:           (" + str(forward.x) + ",\t " + str(forward.y) + ",\t " + str(forward.z) + ")")
+#        print("Right:             (" + str(right.x)   + ",\t " + str(right.y)   + ",\t " + str(right.z)   + ")")
+#        print("Up:                (" + str(up.x)      + ",\t " + str(up.y)      + ",\t " + str(up.z)      + ")")
+#        print("Forward:           (" + str(forward.x) + ",\t " + str(forward.y) + ",\t " + str(forward.z) + ")")
 
         vx = (self.vel.x * right.x) + (self.vel.y * up.x) - (self.vel.z * forward.x)
 #        vy = (self.vel.x * right.y) + (self.vel.y * up.y) - (self.vel.z * forward.y)
@@ -202,6 +147,5 @@ class Player():
         self.loc.y += vy
         self.loc.z += vz
 #        print(self.loc.x, self.loc.y, self.loc.z)
-        print("Rotation axis (h): (" + str(self.axis.x) + ",\t " + str(self.axis.y) + ",\t " + str(self.axis.z) + ")")
-        print(self.mat)
-        print()
+#        print("Rotation axis (h): (" + str(self.axis.x) + ",\t " + str(self.axis.y) + ",\t " + str(self.axis.z) + ")")
+#        print()

@@ -11,7 +11,7 @@ from event import EventHandler
 from window import Window
 
 def ground():
-    ground_height = 0.5
+    ground_height = 0.2
     ground_vertices = (
                 (30, -ground_height, 50),
                 (30, -ground_height, -50),
@@ -30,8 +30,8 @@ def main():
     offset_z = 20.0
 
     # Instantiate game components
-    window = Window(800, 600, offset_z)
-#    window = Window(1918, 1000, offset_z)
+#    window = Window(800, 600, offset_z)
+    window = Window(1918, 1000, offset_z)
     player = Player((0,0,offset_z))
     event_handler = EventHandler(window, player)
 
@@ -110,7 +110,7 @@ def main():
 #        print(click)
 #        print()
         pygame.display.flip()
-        pygame.time.wait(100)
+        pygame.time.wait(10)
 
         counter += 1
 
